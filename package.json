@@ -1,0 +1,17 @@
+{
+  "name": "nelson-cms-pptr",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "puppeteer": "^24.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": ""
+}

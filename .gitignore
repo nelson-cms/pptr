@@ -1,0 +1,13 @@
+# Masks
+*.bak
+
+# Files
+composer.lock
+.phpunit.result.cache
+
+# Dirs
+vendor/
+temp/
+.idea/
+node_modules/
+
