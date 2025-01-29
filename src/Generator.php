@@ -137,8 +137,6 @@ final class Generator
 			throw new ProcessFailedException($process);
 		}
 
-		dumpe($this->command->getCommand());
-
 		return new Result(
 			$this->command->getCommand(),
 			$process->getOutput(),
