@@ -6,7 +6,7 @@ namespace NelsonCms\Pptr\Exceptions;
 use NelsonCms\Pptr\VO\Result;
 use RuntimeException;
 
-class PuppeteerFailedException extends RuntimeException
+class PptrFailedException extends RuntimeException
 {
 	public function __construct(Result $output)
 	{

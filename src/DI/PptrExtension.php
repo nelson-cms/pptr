@@ -7,10 +7,7 @@ use NelsonCms\Pptr\GeneratorConfig;
 use NelsonCms\Pptr\Generator;
 use NelsonCms\Pptr\GeneratorFactory;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Definitions\Definition;
 use Nette\DI\Definitions\Statement;
-use Nette\DI\Helpers;
-use Nette\Schema\Elements\AnyOf;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 

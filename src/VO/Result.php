@@ -2,7 +2,7 @@
 
 namespace NelsonCms\Pptr\VO;
 
-use NelsonCms\Pptr\Exceptions\PuppeteerFailedException;
+use NelsonCms\Pptr\Exceptions\PptrFailedException;
 
 final readonly class Result
 {
@@ -16,7 +16,7 @@ final readonly class Result
 	)
 	{
 		if ($this->console !== '') {
-			throw new PuppeteerFailedException($this);
+			throw new PptrFailedException($this);
 		}
 	}
 

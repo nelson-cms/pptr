@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace NelsonCms\Pptr;
 
 use NelsonCms\Pptr\Enums\OutputMode;
-use NelsonCms\Pptr\Exceptions\UndefinedModeException;
 use NelsonCms\Pptr\VO\Command;
 use NelsonCms\Pptr\VO\Result;
 use NelsonCms\Ssh2\Exceptions\ProcessFailedException;
 use NelsonCms\Ssh2\Process;
-use Exception;
 use NelsonCms\Pptr\Presets\Preset;
 use Nette\Http\UrlScript;
 use Nette\SmartObject;
