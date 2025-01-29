@@ -43,7 +43,11 @@ class Generator
 		// Process outputMode, this is not either/or, it can be both
 		if (this.#isset(this.args.pdf)) {
 			this.outputPdf = true;
-			this.pageParameters = {
+
+			/**
+			 * @see https://pptr.dev/api/puppeteer.pdfoptions
+			 */
+			this.pdfOptions = {
 				path: this.args.output + '.pdf',
 				margin: 0,
 				printBackground: true,
@@ -104,7 +108,7 @@ class Generator
 	#setPageFormat()
 	{
 		if (this.#isset(this.args.pageFormat)) {
-			this.pageParameters['format'] = this.args.pageFormat;
+			this.pdfOptions['format'] = this.args.pageFormat;
 		}
 	}
 
@@ -116,8 +120,8 @@ class Generator
 			&&
 			this.#isset(this.args.pageHeight)
 		) {
-			this.pageParameters['width'] = this.args.pageWidth + 'mm';
-			this.pageParameters['height'] = this.args.pageHeight + 'mm';
+			this.pdfOptions['width'] = this.args.pageWidth + 'mm';
+			this.pdfOptions['height'] = this.args.pageHeight + 'mm';
 		}
 	}
 
@@ -125,7 +129,7 @@ class Generator
 	#setLandscape()
 	{
 		if (this.#isset(this.args.landscape)) {
-			this.pageParameters['landscape'] = true;
+			this.pdfOptions['landscape'] = true;
 		}
 	}
 
@@ -192,7 +196,7 @@ class Generator
 
 		if (this.outputPdf) {
 			await page.emulateMediaType('print');
-			await page.pdf(this.pageParameters);
+			await page.pdf(this.pdfOptions);
 		}
 
 		await browser.close();
