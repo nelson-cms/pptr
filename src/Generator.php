@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace NelsonCms\Pptr;
 
+use NelsonCms\Pptr\Enums\OutputMode;
+use NelsonCms\Pptr\Exceptions\UndefinedModeException;
+use NelsonCms\Pptr\VO\Command;
 use NelsonCms\Pptr\VO\Result;
 use NelsonCms\Ssh2\Exceptions\ProcessFailedException;
 use NelsonCms\Ssh2\Process;
@@ -16,35 +19,32 @@ final class Generator
 {
 	use SmartObject;
 
-	public const int GENERATE_PDF = 1;
-	public const int GENERATE_IMAGE = 2;
-	public const int GENERATE_BOTH = 3;
-	public const string SCRIPT_PATH = __DIR__ . '/assets/generator.js';
-
-	/** @var array<string|null> */
-	private array $options = [];
-
 	private ?Preset $preset = null;
 	private ?string $tempFileName = null;
 
 	/** @var array<string|null> */
 	private array $output;
 
+	private Command $command;
 
 	public function __construct(
 		private readonly GeneratorConfig $generatorConfig
 	)
 	{
+		$this->command = new Command(
+			$this->generatorConfig->getNodeCommand(),
+			$this->generatorConfig->getScriptPath(),
+		);
 	}
 
 
-	public function generateFromHtml(string $html, int $mode): Result
+	public function generateFromHtml(string $html, OutputMode $mode): Result
 	{
 		$htmlFilePath = $this->getTempFilePath('.html');
 		FileSystem::write($htmlFilePath, $html);
 
-		$this->setOption('--inputMode', 'file');
-		$this->setOption('--input', $htmlFilePath);
+		$this->command->setOption('--inputMode', 'file');
+		$this->command->setOption('--input', $htmlFilePath);
 		$output = $this->generate($mode);
 
 		FileSystem::delete($htmlFilePath);
@@ -53,10 +53,10 @@ final class Generator
 	}
 
 
-	public function generateFromUrl(UrlScript $url, int $mode): Result
+	public function generateFromUrl(UrlScript $url, OutputMode $mode): Result
 	{
-		$this->setOption('--inputMode', 'url');
-		$this->setOption('--input', (string) $url);
+		$this->command->setOption('--inputMode', 'url');
+		$this->command->setOption('--input', (string) $url);
 		return $this->generate($mode);
 	}
 
@@ -64,21 +64,6 @@ final class Generator
 	public function setPreset(?Preset $preset): void
 	{
 		$this->preset = $preset;
-	}
-
-
-	public function setOption(string $name, ?string $value = null): void
-	{
-		$this->options[$name] = $value;
-	}
-
-
-	/** @param array<string|null> $options */
-	public function setOptions(array $options): void
-	{
-		foreach ($options as $name => $value) {
-			$this->setOption($name, $value);
-		}
 	}
 
 
@@ -109,40 +94,38 @@ final class Generator
 	}
 
 
-	private function generate(int $mode): Result
+	private function generate(OutputMode $mode): Result
 	{
 		if ($this->preset !== null) {
-			$this->setOptions($this->preset->getOptions());
+			$this->command->setOptions($this->preset->getOptions());
 		}
 
 		switch ($mode) {
-			case self::GENERATE_PDF:
+			case OutputMode::PDF:
 				$this->outputPdf();
 				break;
-			case self::GENERATE_IMAGE:
+			case OutputMode::IMG:
 				$this->outputImage();
 				break;
-			case self::GENERATE_BOTH:
+			case OutputMode::BOTH:
 				$this->outputPdf();
 				$this->outputImage();
 				break;
-			default:
-				throw new Exception('Mode ' . $mode . ' is not defined.');
 		}
 
-		$this->setOption('--output', $this->getTempFilePath());
+		$this->command->setOption('--output', $this->getTempFilePath());
 
-		$this->setOption('--httpUser', $this->generatorConfig->getHttpUser());
-		$this->setOption('--httpPass', $this->generatorConfig->getHttpPass());
-		$this->setOption('--timeout', (string) $this->generatorConfig->getTimeout());
+		$this->command->setOption('--httpUser', $this->generatorConfig->getHttpUser());
+		$this->command->setOption('--httpPass', $this->generatorConfig->getHttpPass());
+		$this->command->setOption('--timeout', (string) $this->generatorConfig->getTimeout());
 
 		if ($this->generatorConfig->getSandbox() === false) {
-			$this->setOption('--no-sandbox');
+			$this->command->setOption('--no-sandbox');
 		}
 
 		$process = new Process(
 			$this->generatorConfig->getConnection(),
-			$this->getCommand(),
+			$this->command->getCommand(),
 			null,
 		);
 		$process->run();
@@ -153,7 +136,7 @@ final class Generator
 		}
 
 		return new Result(
-			$this->getCommand(),
+			$this->command->getCommand(),
 			$process->getOutput(),
 			$this->output['pdf'] ?? null,
 			$this->output['image'] ?? null,
@@ -163,32 +146,14 @@ final class Generator
 
 	private function outputPdf(): void
 	{
-		$this->setOption('--pdf');
+		$this->command->setOption('--pdf');
 		$this->output['pdf'] = $this->getTempFilePath() . '.pdf';
 	}
 
 
 	private function outputImage(): void
 	{
-		$this->setOption('--image');
+		$this->command->setOption('--image');
 		$this->output['image'] = $this->getTempFilePath() . '.png';
-	}
-
-
-	/** @return list<string> */
-	private function getCommand(): array
-	{
-		$command = [];
-
-		foreach ($this->options as $key => $value) {
-			$command[] = match(true) {
-				is_null($value), trim($value) === '' => (string) $key,
-				default => $key . '=' . $value,
-			};
-		}
-
-		array_unshift($command, $this->generatorConfig->getNodeCommand(), self::SCRIPT_PATH);
-
-		return $command;
 	}
 }

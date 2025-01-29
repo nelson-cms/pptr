@@ -48,7 +48,7 @@ class Generator
 				margin: 0,
 				printBackground: true,
 				preferCSSPageSize: true,
-				timeout: this.args.timeout ?? 300_000,
+				timeout: this.args.timeout,
 			};
 			this.#setPageFormat();
 			this.#setPageDimensions();
@@ -159,7 +159,7 @@ class Generator
 
 		await this.#setHttpAuth(page);
 		await page.setDefaultNavigationTimeout(0);
-		await page.setDefaultTimeout(0);
+		await page.setDefaultTimeout(this.args.timeout);
 
 		if (this.viewport) {
 			await page.setViewport(this.viewport);

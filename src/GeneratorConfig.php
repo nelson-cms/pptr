@@ -15,6 +15,7 @@ final class GeneratorConfig
 		private readonly string $tempDir,
 		private readonly int $timeout,
 		private readonly string $nodeCommand,
+		private readonly string $scriptPath,
 		private readonly ?bool $sandbox,
 		private readonly ?string $httpUser,
 		private readonly ?string $httpPass,
@@ -44,6 +45,12 @@ final class GeneratorConfig
 	public function getNodeCommand(): string
 	{
 		return $this->nodeCommand;
+	}
+
+
+	public function getScriptPath(): string
+	{
+		return $this->scriptPath;
 	}
 
 

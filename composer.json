@@ -4,7 +4,8 @@
 	"require": {
 		"php": "^8.3",
 		"nette/di": "^3.2",
-		"nelson-cms/ssh2": "^1.0"
+		"nelson-cms/ssh2": "^1.0",
+		"nette/http": "^3.3"
 	},
 	"require-dev": {
 		"phpstan/extension-installer": "^1.0",
