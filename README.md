@@ -20,6 +20,7 @@
 		tempDir: '%tempDir%/puppeteer/'
 		timeout: 30_000 # miliseconds
 		sandbox: false
+ 		outline: false # Generate document outline
 		nodeCommand: 'node' # in case multiple versions are installed or for additional arguments
  		scriptPath: '%vendorDir%/nelson-cms/pptr/src/assets/generator.js'
  		httpUser: # http auth

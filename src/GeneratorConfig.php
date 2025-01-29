@@ -17,6 +17,7 @@ final class GeneratorConfig
 		private readonly string $nodeCommand,
 		private readonly string $scriptPath,
 		private readonly ?bool $sandbox,
+		private readonly ?bool $outline,
 		private readonly ?string $httpUser,
 		private readonly ?string $httpPass,
 	)
@@ -57,6 +58,12 @@ final class GeneratorConfig
 	public function getSandbox(): ?bool
 	{
 		return $this->sandbox;
+	}
+
+
+	public function getOutline(): ?bool
+	{
+		return $this->outline;
 	}
 
 

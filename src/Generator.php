@@ -121,6 +121,10 @@ final class Generator
 			$this->command->setOption('--no-sandbox');
 		}
 
+		if ($this->generatorConfig->getOutline() === true) {
+			$this->command->setOption('--outline');
+		}
+
 		$process = new Process(
 			$this->generatorConfig->getConnection(),
 			$this->command->getCommand(),
@@ -132,6 +136,8 @@ final class Generator
 		if (!$process->isSuccessful()) {
 			throw new ProcessFailedException($process);
 		}
+
+		dumpe($this->command->getCommand());
 
 		return new Result(
 			$this->command->getCommand(),

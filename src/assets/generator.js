@@ -7,18 +7,19 @@ class Generator
 	 * @param {String} args.input
 	 * @param {String} args.inputMode
 	 * @param {String} args.output
-	 * @param {Boolean} args.pdf
-	 * @param {Boolean} args.image
-	 * @param {Boolean} args.sandbox
+	 * @param {String} args.pageFormat
 	 * @param {String} args.httpUser
 	 * @param {String} args.httpPass
 	 * @param {Number} args.viewportWidth
 	 * @param {Number} args.viewportHeight
-	 * @param {String} args.pageFormat
 	 * @param {Number} args.pageWidth
 	 * @param {Number} args.pageHeight
-	 * @param {Boolean} args.landscape
 	 * @param {Number} args.timeout
+	 * @param {Boolean} args.pdf
+	 * @param {Boolean} args.image
+	 * @param {Boolean} args.sandbox
+	 * @param {Boolean} args.landscape
+	 * @param {Boolean} args.outline
 	 */
 	constructor(args)
 	{
@@ -53,6 +54,7 @@ class Generator
 				printBackground: true,
 				preferCSSPageSize: true,
 				timeout: this.args.timeout,
+				outline: this.args.outline,
 			};
 			this.#setPageFormat();
 			this.#setPageDimensions();

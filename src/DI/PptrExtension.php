@@ -30,6 +30,7 @@ final class PptrExtension extends CompilerExtension
 			'tempDir' => Expect::string()->default($tempDir),
 			'timeout' => Expect::int()->default(30_000)->min(0)->max(999_999),
 			'sandbox' => Expect::bool()->nullable()->default(false),
+			'outline' => Expect::bool()->nullable()->default(false),
 			'nodeCommand' => Expect::string()->default('node'),
 			'scriptPath' => Expect::string()->default($scriptPath),
 			'httpUser' => Expect::string()->nullable()->default(null),
