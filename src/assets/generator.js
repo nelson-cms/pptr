@@ -34,15 +34,15 @@ class Generator
 		// console.log(args);
 		// return;
 
-		this.#checkArg(this.args.input);
-		this.#checkArg(this.args.inputMode);
-		this.#checkArg(this.args.output);
+		this.checkArg(this.args.input);
+		this.checkArg(this.args.inputMode);
+		this.checkArg(this.args.output);
 
-		this.httpAuth = this.#getHttpAuthParams();
-		this.viewport = this.#getViewport();
+		this.httpAuth = this.getHttpAuthParams();
+		this.viewport = this.getViewport();
 
 		// Process outputMode, this is not either/or, it can be both
-		if (this.#isset(this.args.pdf)) {
+		if (this.isset(this.args.pdf)) {
 			this.outputPdf = true;
 
 			/**
@@ -56,38 +56,38 @@ class Generator
 				timeout: this.args.timeout,
 				outline: this.args.outline,
 			};
-			this.#setPageFormat();
-			this.#setPageDimensions();
-			this.#setLandscape();
+			this.setPageFormat();
+			this.setPageDimensions();
+			this.setLandscape();
 		}
 
-		if (this.#isset(this.args.image)) {
+		if (this.isset(this.args.image)) {
 			this.outputImage = true;
 		}
 
-		if (this.#isset(this.args.sandbox) && this.args.sandbox === false) {
+		if (this.isset(this.args.sandbox) && this.args.sandbox === false) {
 			this.browserArgs.push('--no-sandbox');
 		}
 	}
 
 
-	#isset(variable)
+	isset(variable)
 	{
 		return typeof variable !== 'undefined';
 	}
 
 
-	#checkArg(arg, message = '')
+	checkArg(arg, message = '')
 	{
-		if (!this.#isset(arg)) {
+		if (!this.isset(arg)) {
 			throw Error('Argument ' + arg + ' not set. ' + message);
 		}
 	}
 
 
-	#getHttpAuthParams()
+	getHttpAuthParams()
 	{
-		if (this.#isset(this.args.httpUser) && this.#isset(this.args.httpPass)) {
+		if (this.isset(this.args.httpUser) && this.isset(this.args.httpPass)) {
 			return {
 				username: this.args.httpUser,
 				password: this.args.httpPass,
@@ -96,9 +96,9 @@ class Generator
 	}
 
 
-	#getViewport()
+	getViewport()
 	{
-		if (this.#isset(this.args.viewportWidth) && this.#isset(this.args.viewportHeight)) {
+		if (this.isset(this.args.viewportWidth) && this.isset(this.args.viewportHeight)) {
 			return {
 				width: this.args.viewportWidth,
 				height: this.args.viewportHeight,
@@ -107,20 +107,20 @@ class Generator
 	}
 
 
-	#setPageFormat()
+	setPageFormat()
 	{
-		if (this.#isset(this.args.pageFormat)) {
+		if (this.isset(this.args.pageFormat)) {
 			this.pdfOptions['format'] = this.args.pageFormat;
 		}
 	}
 
 
-	#setPageDimensions()
+	setPageDimensions()
 	{
 		if (
-			this.#isset(this.args.pageWidth)
+			this.isset(this.args.pageWidth)
 			&&
-			this.#isset(this.args.pageHeight)
+			this.isset(this.args.pageHeight)
 		) {
 			this.pdfOptions['width'] = this.args.pageWidth + 'mm';
 			this.pdfOptions['height'] = this.args.pageHeight + 'mm';
@@ -128,9 +128,9 @@ class Generator
 	}
 
 
-	#setLandscape()
+	setLandscape()
 	{
-		if (this.#isset(this.args.landscape)) {
+		if (this.isset(this.args.landscape)) {
 			this.pdfOptions['landscape'] = true;
 		}
 	}
@@ -139,7 +139,7 @@ class Generator
 	/**
 	 * @param {Page} page
 	 */
-	async #setHttpAuth(page)
+	async setHttpAuth(page)
 	{
 		if (this.httpAuth) {
 			if (this.args.inputMode === 'file') {
@@ -163,7 +163,7 @@ class Generator
 
 		const page = await browser.newPage();
 
-		await this.#setHttpAuth(page);
+		await this.setHttpAuth(page);
 		await page.setDefaultNavigationTimeout(0);
 		await page.setDefaultTimeout(this.args.timeout);
 
