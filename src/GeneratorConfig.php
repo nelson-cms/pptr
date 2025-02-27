@@ -10,18 +10,55 @@ final class GeneratorConfig
 {
 	use SmartObject;
 
+	/** @var Connection */
+	private $connection;
+
+	/** @var string */
+	private $tempDir;
+
+	/** @var int */
+	private $timeout;
+
+	/** @var string */
+	private $nodeCommand;
+
+	/** @var string */
+	private $scriptPath;
+
+	/** @var bool|null */
+	private $sandbox;
+
+	/** @var bool|null */
+	private $outline;
+
+	/** @var string|null */
+	private $httpUser;
+
+	/** @var string|null */
+	private $httpPass;
+
+
 	public function __construct(
-		private readonly Connection $connection,
-		private readonly string $tempDir,
-		private readonly int $timeout,
-		private readonly string $nodeCommand,
-		private readonly string $scriptPath,
-		private readonly ?bool $sandbox,
-		private readonly ?bool $outline,
-		private readonly ?string $httpUser,
-		private readonly ?string $httpPass,
+		Connection $connection,
+		string $tempDir,
+		int $timeout,
+		string $nodeCommand,
+		string $scriptPath,
+		?bool $sandbox,
+		?bool $outline,
+		?string $httpUser,
+		?string $httpPass
 	)
 	{
+		$this->httpPass = $httpPass;
+		$this->httpUser = $httpUser;
+		$this->outline = $outline;
+		$this->sandbox = $sandbox;
+		$this->scriptPath = $scriptPath;
+		$this->nodeCommand = $nodeCommand;
+		$this->timeout = $timeout;
+		$this->tempDir = $tempDir;
+		$this->connection = $connection;
 	}
 
 

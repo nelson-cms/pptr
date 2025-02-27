@@ -4,14 +4,26 @@ namespace NelsonCms\Pptr\VO;
 
 final class Command
 {
+	/** @var array<string, string|null> */
+	private $options = [];
+
+	/** @var string */
+	private $nodeCommand;
+
+	/** @var string */
+	private $scriptPath;
+
 
 	/** @param array<string, string|null> $options */
 	public function __construct(
-		private readonly string $nodeCommand,
-		private readonly string $scriptPath,
-		private array $options = [],
+		string $nodeCommand,
+		string $scriptPath,
+		array $options = []
 	)
 	{
+		$this->scriptPath = $scriptPath;
+		$this->nodeCommand = $nodeCommand;
+		$this->options = $options;
 	}
 
 
@@ -21,10 +33,15 @@ final class Command
 		$command = [];
 
 		foreach ($this->options as $key => $value) {
-			$command[] = match(true) {
-				is_null($value), trim($value) === '' => $key,
-				default => $key . '=' . $value,
-			};
+			switch (true) {
+				case is_null($value):
+				case trim($value) === '': // @phpstan-ignore-line
+					$command[] = $key;
+					break;
+				default:
+					$command[] = $key . '=' . $value;
+					break;
+			}
 		}
 
 		array_unshift($command, $this->nodeCommand, $this->scriptPath);

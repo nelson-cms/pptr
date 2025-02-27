@@ -2,9 +2,9 @@
 
 namespace NelsonCms\Pptr\Enums;
 
-enum OutputMode: string
+final class OutputMode
 {
-	case PDF = 'pdf';
-	case IMG = 'img';
-	case BOTH = 'both';
+	const PDF = 'pdf';
+	const IMG = 'img';
+	const BOTH = 'both';
 }

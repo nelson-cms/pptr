@@ -17,18 +17,27 @@ final class Generator
 {
 	use SmartObject;
 
-	private ?Preset $preset = null;
-	private ?string $tempFileName = null;
+	/** @var Preset|null */
+	private $preset = null;
+
+	/** @var string|null */
+	private $tempFileName = null;
 
 	/** @var array<string|null> */
-	private array $output;
+	private $output;
 
-	private Command $command;
+	/** @var Command */
+	private $command;
+
+	/** @var GeneratorConfig */
+	private $generatorConfig;
+
 
 	public function __construct(
-		private readonly GeneratorConfig $generatorConfig
+		GeneratorConfig $generatorConfig
 	)
 	{
+		$this->generatorConfig = $generatorConfig;
 		$this->command = new Command(
 			$this->generatorConfig->getNodeCommand(),
 			$this->generatorConfig->getScriptPath(),
@@ -77,10 +86,15 @@ final class Generator
 
 	private function getTempFilePath(?string $suffix = null): string
 	{
-		$suffix = match(true) {
-			is_null($suffix), trim($suffix) === '' => '',
-			default => $suffix,
-		};
+		switch (true) {
+			case is_null($suffix):
+			case trim($suffix) === '': // @phpstan-ignore-line
+				$suffix = '';
+				break;
+			default:
+				$suffix = $suffix;
+				break;
+		}
 
 		$parts = [
 			$this->generatorConfig->getTempDir(),

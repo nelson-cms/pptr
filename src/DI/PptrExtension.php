@@ -21,14 +21,16 @@ final class PptrExtension extends CompilerExtension
 		$scriptPath = realpath(__DIR__ . '/../assets/generator.js');
 
 		$expectService = Expect::anyOf(
-			Expect::string()->required()->assert(fn ($input) => str_starts_with($input, '@') || class_exists($input) || interface_exists($input)),
+			Expect::string()->required()->assert(function ($input) {
+				return strpos($input, '@') === 0 || class_exists($input) || interface_exists($input);
+			}),
 			Expect::type(Statement::class)->required(),
 		);
 
 		return Expect::structure([
 			'connection' => $expectService,
 			'tempDir' => Expect::string()->default($tempDir),
-			'timeout' => Expect::int()->default(30_000)->min(0)->max(999_999),
+			'timeout' => Expect::int()->default(30000)->min(0)->max(999999),
 			'sandbox' => Expect::bool()->nullable()->default(false),
 			'outline' => Expect::bool()->nullable()->default(false),
 			'nodeCommand' => Expect::string()->default('node'),

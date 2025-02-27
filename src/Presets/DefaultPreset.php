@@ -6,10 +6,10 @@ namespace NelsonCms\Pptr\Presets;
 abstract class DefaultPreset implements Preset
 {
 	/** @var array<string|null> */
-	protected array $defaultOptions = [];
+	protected $defaultOptions = [];
 
 	/** @var array<string|null> */
-	protected array $options = [];
+	protected $options = [];
 
 
 	public function getOptions(): array

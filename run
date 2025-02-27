@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Define vars
-PHP="php8.3"
+PHP="php7.3"
 COMPOSER_INSTALL_COMMAND_DEV="$PHP composer.phar install";
 
 # Command shortcuts

@@ -4,17 +4,33 @@ namespace NelsonCms\Pptr\VO;
 
 use NelsonCms\Pptr\Exceptions\PptrFailedException;
 
-final readonly class Result
+final class Result
 {
+	/** @var list<string> */
+	private $command;
+
+	/** @var string */
+	private $console;
+
+	/** @var string|null */
+	private $pdfPath = null;
+
+	/** @var string|null */
+	private $imgPath = null;
+
 
 	/** @param list<string> $command */
 	public function __construct(
-		private array $command,
-		private string $console,
-		private ?string $pdfPath = null,
-		private ?string $imgPath = null,
+		array $command,
+		string $console,
+		?string $pdfPath = null,
+		?string $imgPath = null
 	)
 	{
+		$this->imgPath = $imgPath;
+		$this->pdfPath = $pdfPath;
+		$this->console = $console;
+		$this->command = $command;
 		if ($this->console !== '') {
 			throw new PptrFailedException($this);
 		}

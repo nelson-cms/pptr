@@ -2,18 +2,16 @@
 	"name": "nelson-cms/pptr",
 	"description": "Simple Puppeteer wrapper for Nette",
 	"require": {
-		"php": "^8.3",
-		"nette/di": "^3.2",
-		"nelson-cms/ssh2": "^1.0",
-		"nette/http": "^3.3"
+		"php": "^7.3 | ^8.0",
+		"nette/di": "^3.0",
+		"nelson-cms/ssh2": "^0.7.3.0",
+		"nette/http": "^3.1"
 	},
 	"require-dev": {
 		"phpstan/extension-installer": "^1.0",
 		"phpstan/phpstan": "^1.0.0",
 		"phpstan/phpstan-nette": "^1.0.0",
-		"roave/security-advisories": "dev-master",
-		"phpunit/phpunit": "^11.0.0",
-		"tracy/tracy": "^2.9"
+		"roave/security-advisories": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {
