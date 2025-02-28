@@ -45,7 +45,7 @@ final class Generator
 	}
 
 
-	public function generateFromHtml(string $html, OutputMode $mode): Result
+	public function generateFromHtml(string $html, string $mode): Result
 	{
 		$htmlFilePath = $this->getTempFilePath('.html');
 		FileSystem::write($htmlFilePath, $html);
@@ -60,7 +60,7 @@ final class Generator
 	}
 
 
-	public function generateFromUrl(UrlScript $url, OutputMode $mode): Result
+	public function generateFromUrl(UrlScript $url, string $mode): Result
 	{
 		$this->command->setOption('--inputMode', 'url');
 		$this->command->setOption('--input', (string) $url);
@@ -106,7 +106,7 @@ final class Generator
 	}
 
 
-	private function generate(OutputMode $mode): Result
+	private function generate(string $mode): Result
 	{
 		if ($this->preset !== null) {
 			$this->command->setOptions($this->preset->getOptions());
